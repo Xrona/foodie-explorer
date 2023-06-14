@@ -1,0 +1,7 @@
+@import './reset';
+@import './variables';
+
+body {
+	color: var(--text);
+	background-color: var(--primary);
+}
