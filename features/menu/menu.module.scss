@@ -2,26 +2,71 @@
 
 .menu {
 	position: fixed;
-	width: 100vw;
-	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: calc(var(--step) * 4);
+	background-color: var(--primary);
+	border-radius: calc(var(--step) * 2);
 
 	.ul {
-		display: flex;
-		justify-content: space-between;
-		background-color: var(--primary);
-		border-top: 1px solid var(--border);
-		margin: 0 4px;
-	}
+		$count-items: 5;
 
-	.link {
-		display: flex;
-		flex-direction: column;
-		font-size: calc(var(--step) * 3);
-		padding: calc(var(--step) * 3) calc(var(--step) * 4);
+		display: grid;
+		grid-template-columns: repeat(var(--count-items), 1fr);
+		position: relative;
 
-		.icon {
-			width: 24px;
-			height: 24px;
+		.li {
+			flex-shrink: 0;
+			display: block;
+
+			&:last-child::after {
+				content: '';
+				display: block;
+				position: absolute;
+				width: calc(100 / var(--count-items) * 1%);
+				left: 0;
+				top: 0;
+				bottom: 0;
+				background-color: var(--secondary);
+				z-index: -1;
+				border-radius: calc(var(--step) / 2);
+				transition: left cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+			}
+
+			// &:nth-child(2).active ~ .li:last-child::after {
+			// 	left: 20%;
+			// }
+
+			@for $i from 1 through $count-items {
+				&:nth-child(#{$i}).active ~ .li:last-child::after {
+					left: 20% * ($i - 1);
+				}
+			}
+
+			&:last-child.active::after {
+				left: 80%;
+			}
+		}
+
+		.link {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			font-size: calc(var(--step) * 3);
+			line-height: calc(var(--step) * 3);
+			padding: var(--step) var(--step);
+			gap: var(--step);
+
+			:global(.svg-icon) {
+				width: calc(var(--step) * 4);
+				height: calc(var(--step) * 4);
+			}
+
+			@include md {
+				:global(.svg-icon) {
+					display: none;
+				}
+			}
 		}
 	}
 
